@@ -1,14 +1,9 @@
-1. The Future of Spatial Analysis in the Social Sciences
-Main Idea : The study mainly wants to address how advances in geo-spatial analysis is influenced by social sciences and vice versa.
-This is useful as construction permits for residential, commercial or public buildings go hand in hand with socio-economic demography of an area.
-Given the time, study cites major challenges in being able to read, manipulate and store large amounts of detailed data which is required for any geo-spatial analysis, like maps, roads etc. With today's accessibility of such data from local governments and combining it with flexibility of cloud, makes such limitations go away around gis.
+The study[AP-1] mainly wants to address how construction permits for residential, commercial or public buildings go hand in hand with socio-economic demography of an area.
+Study cites major challenges in being able to read, manipulate and store large amounts of detailed data which is required for any geo-spatial analysis.
+With flexibility and power of cloud, we make such limitations go away.
 	
-2. Using Building Permits to Monitor Disaster Recovery: A Spatio-Temporal Case Study of Coastal Mississippi Following Hurricane Katrina
-Main Idea : of the author here is to identify extent of damage and recovery efforts based on building permits and a spatial scan.
-This is directly relevant to us as city planners, specifically in danger areas, can use our website/tool to balance giving out building permits to residential, and also understand disaster recovery clusters and allocate resources accordingly.
-Author touches but fails to fully integrate re-population, or not immigration pre and post disaster. For example if people chose to move away from the region permanently.
-	
-3. Adaptive clustering algorithm based on kNN and density
-Main idea: The author looks to utilize density of population to sample t dynamically adjust k value in the algorithm.
-This is particularly useful for us as even within city concentration of building permits needs to be changed for example, city center vs suburbs etc.
-Author fails to show how the cluster moves/trends as external factors influence density as against to a cluster behaving in a silo. Our analysis using the building permits will look to perform trend analysis on these clusters
+The study[AP-2] identifies extent of damage and recovery efforts based on building permits and a spatial scan. 
+Our tool aims to enable city planners to balance giving out building permits by understanding disaster recovery clusters and allocate resources accordingly.
+
+The study[AP-3] looks to utilize density of population to dynamically adjust k value in the algorithm as even within city concentration of building permits needs to be changed for example, city center vs suburbs etc.
+Our analysis using the building permits will focus on clusters of building permits than treating each permit in a silo.
