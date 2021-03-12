@@ -1,9 +1,9 @@
-The study[AP-1] mainly wants to address how construction permits for residential, commercial or public buildings go hand in hand with socio-economic demography of an area.
-Study cites major challenges in being able to read, manipulate and store large amounts of detailed data which is required for any geo-spatial analysis.
+The study[AP-1] addresses how construction permits for residential, commercial or public buildings affects socio-economic demography of an area.
+It cites major challenges in being able to read, manipulate and store large amounts of detailed data which is required for geo-spatial analysis.
 With flexibility and power of cloud, we make such limitations go away.
 	
-The study[AP-2] identifies extent of damage and recovery efforts based on building permits and a spatial scan. 
+The study[AP-2] identifies extent of damage and recovery efforts based on building permits and spatial scans. 
 Our tool aims to enable city planners to balance giving out building permits by understanding disaster recovery clusters and allocate resources accordingly.
 
-The study[AP-3] looks to utilize density of population to dynamically adjust k value in the algorithm as even within city concentration of building permits needs to be changed for example, city center vs suburbs etc.
-Our analysis using the building permits will focus on clusters of building permits than treating each permit in a silo.
+The study[AP-3] utilizes density of population to dynamically adjust k value in the algorithm as even within city concentration of building permits needs to be changed for example, city center vs suburbs.
+Our analysis using the building permits will focus on clusters of permits than treating each permit in a silo.
