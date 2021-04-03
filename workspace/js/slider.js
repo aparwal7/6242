@@ -1,4 +1,24 @@
-document.addEventListener("DOMContentLoaded", function(event) {
+document.addEventListener("DOMContentLoaded", function (event) {
+
+  function drawPoints(dateObj) {
+    console.log("type in drawpoints",typeof(dateObj));
+
+    let selectedMonth = dateObj.getMonth() + 1;
+    let selectedYear = dateObj.getFullYear();
+    let selectedEndMonth = selectedMonth + 1
+    let selectedEndYear = selectedYear
+    if(selectedMonth===12){
+        selectedEndMonth = 1;
+        selectedEndYear=selectedYear+1;
+    }
+
+    console.log(selectedMonth)
+    console.log(selectedYear)
+    var selectedStartDate = selectedYear + "-" + selectedMonth + "-01"
+    var selectedEndDate = selectedEndYear + "-" + selectedEndMonth + "-01"
+
+    drawMarkersOnMap("https://data.cityofchicago.org/resource/ydr8-5enu.json?$where=permit_type='PERMIT - NEW CONSTRUCTION' AND application_start_date >= '" + selectedStartDate + "' and application_start_date < '" + selectedEndDate + "'")
+  }
 
   var formatDateIntoYear = d3.timeFormat("%Y");
   var formatDate = d3.timeFormat("%b %Y");
@@ -47,28 +67,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
     })
     .attr("class", "track-overlay")
     .call(d3.drag()
-      .on("start.interrupt", function () {
-        slider.interrupt();
-      })
-      .on("start drag", function () {
-        currentValue = d3.event.x;
-        // update(x.invert(currentValue));
-      })
-      .on("end",function (){
-        currentValue = d3.event.x;
-        console.log("end drag event: ",x.invert(currentValue))
-        var dateObj = new Date(x.invert(currentValue));
-        let selectedMonth = dateObj.getMonth()+1;
-        let selectedEndMonth = selectedMonth+1
-        console.log(selectedMonth)
-        let selectedYear = dateObj.getFullYear();
-        console.log(selectedYear)
-        var selectedStartDate = selectedYear+"-"+selectedMonth+"-01"
-        var selectedEndDate = selectedYear+"-"+ selectedEndMonth +"-01"
-
-        drawPoints("https://data.cityofchicago.org/resource/ydr8-5enu.json?$where=permit_type='PERMIT - NEW CONSTRUCTION' AND application_start_date >= '"+selectedStartDate+"' and application_start_date < '"+selectedEndDate+"'")
-        update(x.invert(currentValue))
-      })
+        .on("start.interrupt", function () {
+          slider.interrupt();
+        })
+        .on("start drag", function () {
+          currentValue = d3.event.x;
+          // update(x.invert(currentValue));
+        })
+        .on("end", function () {
+          currentValue = d3.event.x;
+          console.log("end drag event: ", x.invert(currentValue))
+          var dateObj = new Date(x.invert(currentValue));
+          drawPoints(dateObj);
+          update(x.invert(currentValue))
+        })
       // .on("mouseover",function (){
       //   currentValue = d3.event.x;
       //   console.log("end drag event mouse over: ",currentValue)
@@ -109,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   d3.csv("circles.csv", prepare, function (data) {
-    console.log("in circles.csv",data)
+    console.log("in circles.csv", data)
     dataset = data;
     drawPlot(dataset);
 
@@ -123,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
           button.text("Play");
         } else {
           moving = true;
-          timer = setInterval(step, 100);
+          timer = setInterval(step, 1000);
           button.text("Pause");
         }
         console.log("Slider moving: " + moving);
@@ -189,10 +201,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
       .attr("x", x(h))
       .text(formatDate(h));
 
-    // filter data set and redraw plot
-    var newData = dataset.filter(function (d) {
-      return d.date < h;
-    })
+    console.log("h:", h)
+    var dateObj = new Date(h);
+    // console.log("dateobj:",dateObj)
+    drawPoints(h);
     // drawPlot(newData);
   }
 });

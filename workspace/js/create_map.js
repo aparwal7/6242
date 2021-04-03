@@ -1,4 +1,4 @@
-var map = L.map('map').setView([41.8781, -87.6298], 13);
+var map = L.map('map').setView([41.8781, -87.6298], 9);
   mapLink =
     '<a href="http://openstreetmap.org">OpenStreetMap</a>';
   L.tileLayer(
@@ -10,10 +10,10 @@ var map = L.map('map').setView([41.8781, -87.6298], 13);
   /* Initialize the SVG layer */
   map._initPathRoot()
 document.addEventListener("DOMContentLoaded", function (event) {
-  drawPoints("https://data.cityofchicago.org/resource/ydr8-5enu.json?$where=permit_type='PERMIT - NEW CONSTRUCTION' AND application_start_date >= '2021-01-01T00:00:00.000' and application_start_date <= '2021-02-01T00:00:00.000'");
+  drawMarkersOnMap("https://data.cityofchicago.org/resource/ydr8-5enu.json?$where=permit_type='PERMIT - NEW CONSTRUCTION' AND application_start_date >= '2021-01-01T00:00:00.000' and application_start_date <= '2021-02-01T00:00:00.000'");
 });
 
-function drawPoints(url) {
+function drawMarkersOnMap(url) {
   /* We simply pick up the SVG from the map object */
   var svg = d3.select("#map").select("svg");
   svg.selectAll("g").remove();
