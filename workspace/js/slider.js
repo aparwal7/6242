@@ -4,8 +4,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var formatDate = d3.timeFormat("%b %Y");
   var parseDate = d3.timeParse("%m/%d/%y");
 
-  var startDate = new Date("2004-11-01"),
-    endDate = new Date("2017-04-01");
+  var startDate = new Date("2006-03-01"),
+    endDate = new Date("2021-03-01");
 
   var margin = {top: 50, right: 50, bottom: 0, left: 50},
     width = 960 - margin.left - margin.right,
@@ -52,8 +52,27 @@ document.addEventListener("DOMContentLoaded", function(event) {
       })
       .on("start drag", function () {
         currentValue = d3.event.x;
-        update(x.invert(currentValue));
+        // update(x.invert(currentValue));
       })
+      .on("end",function (){
+        currentValue = d3.event.x;
+        console.log("end drag event: ",x.invert(currentValue))
+        var dateObj = new Date(x.invert(currentValue));
+        let selectedMonth = dateObj.getMonth()+1;
+        let selectedEndMonth = selectedMonth+1
+        console.log(selectedMonth)
+        let selectedYear = dateObj.getFullYear();
+        console.log(selectedYear)
+        var selectedStartDate = selectedYear+"-"+selectedMonth+"-01"
+        var selectedEndDate = selectedYear+"-"+ selectedEndMonth +"-01"
+
+        drawPoints("https://data.cityofchicago.org/resource/ydr8-5enu.json?$where=permit_type='PERMIT - NEW CONSTRUCTION' AND application_start_date >= '"+selectedStartDate+"' and application_start_date < '"+selectedEndDate+"'")
+        update(x.invert(currentValue))
+      })
+      // .on("mouseover",function (){
+      //   currentValue = d3.event.x;
+      //   console.log("end drag event mouse over: ",currentValue)
+      // })
     );
 
   slider.insert("g", ".track-overlay")
@@ -118,6 +137,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
 
   function step() {
+    console.log("in side step")
     update(x.invert(currentValue));
     currentValue = currentValue + (targetValue / 151);
     if (currentValue > targetValue) {
@@ -131,6 +151,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
 
   function drawPlot(data) {
+    console.log("changing data")
     var locations = plot.selectAll(".location")
       .data(data);
 
@@ -172,7 +193,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     var newData = dataset.filter(function (d) {
       return d.date < h;
     })
-    drawPlot(newData);
+    // drawPlot(newData);
   }
 });
 
