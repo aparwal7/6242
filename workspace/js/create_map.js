@@ -7,6 +7,9 @@ var map = L.map('map').setView([41.8781, -87.6298], 9);
       maxZoom: 18,
     }).addTo(map);
 
+  var zipJson = JSON.parse(zip_data);
+  L.geoJson(zipJson).addTo(map);
+
   /* Initialize the SVG layer */
   map._initPathRoot()
 document.addEventListener("DOMContentLoaded", function (event) {
@@ -16,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 function drawMarkersOnMap(url) {
   /* We simply pick up the SVG from the map object */
   var svg = d3.select("#map").select("svg");
-  svg.selectAll("g").remove();
+  svg.selectAll("#marker").remove();
   var g = svg.append("g");
     // console.log("in the drawpoints");
     d3.json(url, function (data) {
@@ -37,6 +40,7 @@ function drawMarkersOnMap(url) {
         .style("stroke", "black")
         .style("opacity", .6)
         .style("fill", "red")
+        .attr("id","marker")
         .attr("r", 5);
 
       map.on("viewreset", update);
