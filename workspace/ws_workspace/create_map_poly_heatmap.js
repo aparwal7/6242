@@ -27,10 +27,19 @@ function drawMarkersOnMap(url) {
   var g = svg.append("g");
     // console.log("in the drawpoints");
     dict1={}
-    
+
+  var cont = d3.select("#map").selectAll(".leaflet-overlay-pane").select("svg").selectAll("g").selectAll("path")
+  .attr("class", "paths");
+  console.log("cont0",cont)
+//.data(d.features)
+  //.enter()
+  //.append("path")
+  //.attr("d", path)
+       
+
     d3.json(url, function (data) {
       /* Add a LatLng object to each item in the dataset */
-      //console.log("data",data);
+      console.log("data",data);
       //data.forEach(function (d))
       var updatedLatLang = d3.entries(data).forEach(function (d) {
         //console.log("in the draw function", d.value)
@@ -59,7 +68,7 @@ function drawMarkersOnMap(url) {
             
           }
           else {z.properties.density = 0}
-          console.log(z.properties)
+          //console.log(z.properties)
         })
         var wardsJson1 = d
         console.log("json",wardsJson1)
@@ -77,11 +86,69 @@ function drawMarkersOnMap(url) {
             else fillColor = "#f2f0f7";  // no data
             return { color: "#999", weight: 1, fillColor: fillColor, fillOpacity: .5 };
           },
-          
+         
           
         }  ).addTo(map);
-      });
+        //cont.data(function())
+        //console.log("d",d)
+        
+        console.log("tooltip d out",d)
+        //create tooltip
 
+        
+        var tooltip = d3.tip()
+        .attr('class', 'd3-tip')
+        .attr("id", "mytooltip")
+        //.offset([-10, 0])
+                    .html(function(c){
+                        
+                        
+                            //datarow = d.get(d.features.properties)
+                            //console.log("dtip",datarow)
+                            /*        
+                            
+
+                            if(counrty_game.length !=0 ){
+                                var color_rating = counrty_game[0]["Average Rating"];
+                                var num_users = counrty_game[0]["Number of Users"];
+                                var display = "<strong>Country: </strong>"+ c.properties.name +"<br><strong>Game: </strong>"+ selectedGame +"<br><strong>Avg Rating: </strong>"+ color_rating +"<br><strong>Number of Users: </strong>"+ num_users
+
+                            return display;
+                            }*/
+                            console.log(c);
+                            return "<strong>Wards: </strong>"+ c.properties.ward +"<br><strong>density: </strong>"+ c.properties.density 
+                            
+                        
+                        });
+
+                        
+              d3.select("#map").selectAll(".leaflet-overlay-pane").select("svg").call(tooltip);
+                       
+              
+              console.log("d.features",d.features) 
+
+              d3.select("#map").selectAll(".leaflet-overlay-pane").select("svg")
+              .selectAll("g")
+              .selectAll(".paths")
+              .data(d.features)
+              .enter()
+              .select("path")
+              
+              //.append("path")
+              //.attr("class","continent")
+              //.attr("stroke","white")
+              //.on("mouseover", tooltip.show)
+              .on("mouseover", tooltip.show)
+
+              //.on("mouseout",tooltip.hide)
+              .on("mouseout", tooltip.hide)
+
+
+
+
+
+      });
+      //console.log("jsonout",wardsJson1)
       
       
 
@@ -160,9 +227,9 @@ function drawMarkersOnMap(url) {
       .enter()
       .append("path")
       .attr("d", path)
-      .attr("class", "zipcode");         
+      .attr("class", "zipcode");    */     
 
-    })*/
+    
 
     
   
