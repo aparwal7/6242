@@ -67,3 +67,8 @@ body {
   stroke-opacity: 0.5;
   stroke-width: 1.25px;
 }
+
+.paths {
+  stroke: rgb(0, 0, 0);
+  
+}
