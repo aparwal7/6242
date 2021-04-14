@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var selectedStartDate = selectedYear + "-" + selectedMonth + "-01"
     var selectedEndDate = selectedEndYear + "-" + selectedEndMonth + "-01"
 
-    drawMarkersOnMap("https://data.cityofchicago.org/resource/ydr8-5enu.json?$where=permit_type='PERMIT - NEW CONSTRUCTION' AND application_start_date >= '" + selectedStartDate + "' and application_start_date < '" + selectedEndDate + "'")
+    drawMarkersOnMap(createUri( selectedStartDate ,selectedEndDate))
   }
 
   var formatDateIntoYear = d3.timeFormat("%Y");
@@ -207,5 +207,21 @@ document.addEventListener("DOMContentLoaded", function (event) {
     drawPoints(h);
     // drawPlot(newData);
   }
+});
+
+$("#marker").change(function() {
+    if(this.checked) {
+        addMarkersOnMap();
+    }else{
+      removeMarkersFromMap();
+    }
+});
+
+$("#heatMap").change(function() {
+    if(this.checked) {
+        addWardsLayerToMap();
+    } else{
+      removeWardsLayerFromMap();
+    }
 });
 

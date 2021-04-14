@@ -1,29 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>d3.js with leaflet.js</title>
+  <title>d3.js with leaflet.js</title>
+  <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  <link rel="stylesheet" href="https://d19vzq90twjlae.cloudfront.net/leaflet-0.7/leaflet.css"/>
+  <link rel="stylesheet" href="css/main.css">
 
-    <link rel="stylesheet" href="https://d19vzq90twjlae.cloudfront.net/leaflet-0.7/leaflet.css" />
-    <link rel="stylesheet" href="css/main.css">
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+  <script src="https://d19vzq90twjlae.cloudfront.net/leaflet-0.7/leaflet.js">
 
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script src="https://d19vzq90twjlae.cloudfront.net/leaflet-0.7/leaflet.js">
 
-    </script>
+  </script>
 
 </head>
 <body>
-  <div>
-	<div id="map" style="width: 1200px; height: 700px"></div>
+<div>
+  <div id="map" style="width: 1200px; height: 700px"></div>
   <div id="vis">
     <div class="title">
       <button id="play-button">Play</button>
+      <label class="container">Heat Map
+        <input type="checkbox" id="heatMap" checked="checked">
+        <span class="checkmark"></span>
+      </label>
+
+      <label class="container">Construction Marker
+        <input type="checkbox" id="marker">
+        <span class="checkmark"></span>
+      </label>
     </div>
   </div>
-  </div>
-  <script type="text/javascript" src="zipcodes.geojson"></script>
-	<script type="text/javascript" src="/js/create_map.js"></script>
-  <script  type="text/javascript"  src="/js/slider.js"></script>
+</div>
+
+<script type="text/javascript" src="zipcodes.geojson"></script>
+<script type="text/javascript" src="chicago_wards1.geojson"></script>
+<script type="text/javascript" src="/js/create_map.js"></script>
+<script type="text/javascript" src="/js/slider.js"></script>
 <!--	<script type="text/javascript" src="https://dva-wasp.s3.amazonaws.com/workspace/js/create_map.js"></script>-->
 <!--  <script  type="text/javascript"  src="https://dva-wasp.s3.amazonaws.com/workspace/js/slider.js"></script>-->
 </body>

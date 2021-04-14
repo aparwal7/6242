@@ -6,13 +6,10 @@ var map = L.map('map').setView([41.8781, -87.6298], 9);
       attribution: '&copy; ' + mapLink + ' Contributors',
       maxZoom: 18,
     }).addTo(map);
-  
+
   var data = JSON.parse(data);
 
   L.geoJson(data).addTo(map);
-  
-  
-  
 
   /* Initialize the SVG layer */
   map._initPathRoot()
@@ -22,7 +19,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 function drawMarkersOnMap(url) {
   /* We simply pick up the SVG from the map object */
-  
   var svg = d3.select("#map").select("svg");
   svg.selectAll("g").remove();
   var g = svg.append("g");
@@ -64,7 +60,7 @@ function drawMarkersOnMap(url) {
           }
         )
       }
-      
+
     });
 
 
@@ -100,7 +96,7 @@ function drawMarkersOnMap(url) {
       // new projection
       projection = d3.geoMercator().center(center).scale(scale * 0.35).translate(offset);
       path = path.projection(projection);
-      
+
       //path = d3.geoPath().projection(projection);
       d3.select("#map").select("svg").select("g")
       .select(".chart")
@@ -113,13 +109,13 @@ function drawMarkersOnMap(url) {
       .enter()
       .append("path")
       .attr("d", path)
-      .attr("class", "zipcode");         
+      .attr("class", "zipcode");
 
     })
-   
-   
+
+
   }
-  
+
 
 
 
