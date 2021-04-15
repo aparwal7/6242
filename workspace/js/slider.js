@@ -1,35 +1,26 @@
+var showConstructionMarkers=true;
+var showDensity=false;
+
+var margin = {top: 50, right: 50, bottom: 0, left: 50},
+  width = 960 - margin.left - margin.right,
+  height = 250 - margin.top - margin.bottom;
+var startDate = new Date("2006-03-01"),
+  endDate = new Date("2021-03-01");
+var x = d3.scaleTime()
+  .domain([startDate, endDate])
+  .range([0, width])
+  .clamp(true);
+
 document.addEventListener("DOMContentLoaded", function (event) {
 
-  function drawPoints(dateObj) {
-    console.log("type in drawpoints",typeof(dateObj));
-
-    let selectedMonth = dateObj.getMonth() + 1;
-    let selectedYear = dateObj.getFullYear();
-    let selectedEndMonth = selectedMonth + 1
-    let selectedEndYear = selectedYear
-    if(selectedMonth===12){
-        selectedEndMonth = 1;
-        selectedEndYear=selectedYear+1;
-    }
-
-    console.log(selectedMonth)
-    console.log(selectedYear)
-    var selectedStartDate = selectedYear + "-" + selectedMonth + "-01"
-    var selectedEndDate = selectedEndYear + "-" + selectedEndMonth + "-01"
-
-    drawMarkersOnMap(createUri( selectedStartDate ,selectedEndDate))
+  function drawPoints() {
+    drawMarkersOnMap(createUri())
   }
 
   var formatDateIntoYear = d3.timeFormat("%Y");
   var formatDate = d3.timeFormat("%b %Y");
   var parseDate = d3.timeParse("%m/%d/%y");
 
-  var startDate = new Date("2006-03-01"),
-    endDate = new Date("2021-03-01");
-
-  var margin = {top: 50, right: 50, bottom: 0, left: 50},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
 
   var svg = d3.select("#vis")
     .append("svg")
@@ -44,13 +35,24 @@ document.addEventListener("DOMContentLoaded", function (event) {
   var targetValue = width;
 
   var playButton = d3.select("#play-button");
+   playButton
+      .on("click", function () {
+        var button = d3.select(this);
+        if (button.text() == "Pause") {
+          moving = false;
+          clearInterval(timer);
+          // timer = 0;
+          button.text("Play");
+        } else {
+          moving = true;
+          timer = setInterval(step, 1000);
+          button.text("Pause");
+        }
+        console.log("Slider moving: " + moving);
+      })
 
-  var x = d3.scaleTime()
-    .domain([startDate, endDate])
-    .range([0, targetValue])
-    .clamp(true);
 
-  var slider = svg.append("g")
+  slider = svg.append("g")
     .attr("class", "slider")
     .attr("transform", "translate(" + margin.left + "," + height / 5 + ")");
 
@@ -67,24 +69,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
     })
     .attr("class", "track-overlay")
     .call(d3.drag()
-        .on("start.interrupt", function () {
-          slider.interrupt();
-        })
-        .on("start drag", function () {
-          currentValue = d3.event.x;
-          // update(x.invert(currentValue));
-        })
-        .on("end", function () {
-          currentValue = d3.event.x;
-          console.log("end drag event: ", x.invert(currentValue))
-          var dateObj = new Date(x.invert(currentValue));
-          drawPoints(dateObj);
-          update(x.invert(currentValue))
-        })
-      // .on("mouseover",function (){
-      //   currentValue = d3.event.x;
-      //   console.log("end drag event mouse over: ",currentValue)
-      // })
+      .on("start.interrupt", function () {
+        slider.interrupt();
+      })
+      .on("start drag", function () {
+        currentValue = d3.event.x;
+        // update(x.invert(currentValue));
+      })
+      .on("end", function () {
+        console.log("in end:", d3.event.x)
+        currentValue = d3.event.x;
+        console.log("end drag event: ", x.invert(currentValue))
+        var dateObj = new Date(x.invert(currentValue));
+        update(x.invert(currentValue));
+      })
     );
 
   slider.insert("g", ".track-overlay")
@@ -103,7 +101,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   var handle = slider.insert("circle", ".track-overlay")
     .attr("class", "handle")
-    .attr("r", 9);
+    .attr("r", 9)
+    .attr("id", "slider-circle");
 
   var label = slider.append("text")
     .attr("class", "label")
@@ -119,28 +118,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
   var plot = svg.append("g")
     .attr("class", "plot")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-  d3.csv("circles.csv", prepare, function (data) {
-    console.log("in circles.csv", data)
-    dataset = data;
-    drawPlot(dataset);
-
-    playButton
-      .on("click", function () {
-        var button = d3.select(this);
-        if (button.text() == "Pause") {
-          moving = false;
-          clearInterval(timer);
-          // timer = 0;
-          button.text("Play");
-        } else {
-          moving = true;
-          timer = setInterval(step, 1000);
-          button.text("Pause");
-        }
-        console.log("Slider moving: " + moving);
-      })
-  })
 
   function prepare(d) {
     d.id = d.id;
@@ -200,28 +177,55 @@ document.addEventListener("DOMContentLoaded", function (event) {
     label
       .attr("x", x(h))
       .text(formatDate(h));
+    drawPoints();
+  }
 
-    console.log("h:", h)
-    var dateObj = new Date(h);
-    // console.log("dateobj:",dateObj)
-    drawPoints(h);
-    // drawPlot(newData);
+  console.log("initializing markers and maps");
+    drawPoints();
+    addWardsLayerToMap();
+});
+
+
+$("#marker").change(function () {
+  if (this.checked) {
+    showConstructionMarkers = true;
+    addMarkersOnMap();
+  } else {
+    showConstructionMarkers = false;
+    removeMarkersFromMap();
   }
 });
 
-$("#marker").change(function() {
-    if(this.checked) {
-        addMarkersOnMap();
-    }else{
-      removeMarkersFromMap();
-    }
+$("#heatMap").change(function () {
+  if (this.checked) {
+    showDensity = true;
+    addWardsLayerToMap();
+  } else {
+    showDensity=false;
+    removeWardsLayerFromMap();
+  }
 });
 
-$("#heatMap").change(function() {
-    if(this.checked) {
-        addWardsLayerToMap();
-    } else{
-      removeWardsLayerFromMap();
-    }
-});
+function getCurrentSelectedDate() {
+  cx = d3.select("#slider-circle").attr("cx")
+  currentValue = Math.round(cx)
+  var dateObj = new Date(x.invert(currentValue));
+  let selectedMonth = dateObj.getMonth() + 1;
+  let selectedYear = dateObj.getFullYear();
+  let selectedEndMonth = selectedMonth + 1
+  let selectedEndYear = selectedYear
+  if (selectedMonth === 12) {
+    selectedEndMonth = 1;
+    selectedEndYear = selectedYear + 1;
+  }
+
+  console.log(selectedMonth)
+  console.log(selectedYear)
+  var selectedStartDate = selectedYear + "-" + selectedMonth + "-01"
+  var selectedEndDate = selectedEndYear + "-" + selectedEndMonth + "-01"
+  console.log(selectedStartDate + " - " + selectedEndDate)
+  return [selectedStartDate, selectedEndDate];
+}
+
+
 

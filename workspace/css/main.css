@@ -14,26 +14,6 @@ body {
   display: inline;
 }
 
-#play-button {
-  position: relative;
-  top: 10px;
-  left: 50px;
-  background: #f08080;
-  padding-right: 26px;
-  border-radius: 3px;
-  border: none;
-  color: white;
-  margin: 0;
-  padding: 0 12px;
-  width: 60px;
-  cursor: pointer;
-  height: 30px;
-}
-
-#play-button:hover {
-  background-color: #696969;
-}
-
 .ticks {
   font-size: 10px;
 }
@@ -75,7 +55,7 @@ body {
 }
 
 /* Customize the label (the container) */
-.container {
+.label-main-page {
   display: block;
   position: relative;
   padding-left: 35px;
@@ -89,7 +69,7 @@ body {
 }
 
 /* Hide the browser's default checkbox */
-.container input {
+.label-main-page input {
   position: absolute;
   opacity: 0;
   cursor: pointer;
@@ -108,12 +88,12 @@ body {
 }
 
 /* On mouse-over, add a grey background color */
-.container:hover input ~ .checkmark {
+.label-main-page:hover input ~ .checkmark {
   background-color: #ccc;
 }
 
 /* When the checkbox is checked, add a blue background */
-.container input:checked ~ .checkmark {
+.label-main-page input:checked ~ .checkmark {
   background-color: #2196F3;
 }
 
@@ -125,12 +105,12 @@ body {
 }
 
 /* Show the checkmark when checked */
-.container input:checked ~ .checkmark:after {
+.label-main-page input:checked ~ .checkmark:after {
   display: block;
 }
 
 /* Style the checkmark/indicator */
-.container .checkmark:after {
+.label-main-page .checkmark:after {
   left: 9px;
   top: 5px;
   width: 5px;
@@ -141,3 +121,4 @@ body {
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 }
+.big-checkbox {width: 30px; height: 30px;}
