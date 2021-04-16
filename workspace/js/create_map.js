@@ -8,7 +8,8 @@ L.tileLayer(
   }).addTo(map);
 
 var layerGroup;
-
+var constructionData;
+var dict1={}
 function createUri() {
   var dates = getCurrentSelectedDate();
   var startDate = dates[0];
@@ -25,45 +26,6 @@ function addWardsLayerToMap() {
     console.log("density is turned off, returning ")
     return
   }
-  var wardLayer;
-  function highlightFeature(e) {
-    var layer = e.target;
-
-    layer.setStyle({
-        weight: 5,
-        color: '#666',
-        dashArray: '',
-        fillOpacity: 0.7
-    });
-
-    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        layer.bringToFront();
-    }
-}
-
-function resetHighlight(e) {
-    wardLayer.resetStyle(e.target);
-}
-
-function onEachFeature(feature, layer) {
-    layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight
-        // click: zoomToFeature
-    });
-}
-
-
-  console.log("adding wards to map")
-  var wardsJson = JSON.parse(data_wards);
-  wardLayer = L.geoJson(wardsJson, {
-    // style: style,
-    onEachFeature: onEachFeature
-});
-
-  layerGroup = new L.LayerGroup();
-  layerGroup.addTo(map)
-  layerGroup.addLayer(wardLayer)
   drawDensityMap()
 }
 
@@ -114,6 +76,10 @@ function drawMarkersOnMap(url) {
         d.LatLng = new L.LatLng(d.value.latitude,
           d.value.longitude)
       }
+      console.log("adding d to dict",d.value.ward)
+       if (dict1[d.value.ward])
+            dict1[d.value.ward]=dict1[d.value.ward]+1
+            else dict1[d.value.ward]=1
     })
     //Adding density to geojson file
 
@@ -148,74 +114,123 @@ function drawMarkersOnMap(url) {
 }
 
 function drawDensityMap() {
-
-  dict1 = {}
   d3.json("chicago_2015_wards.geojson", function (d) {
-    var wardsJson1 = d
-    console.log("json", wardsJson1)
-
     //changing color of polygons
-    var densityLayer = L.geoJson(wardsJson1, {
-      style: function (features) {
-        var fillColor,
-          density = features.properties.density;
-        if (density >= 15) fillColor = "#54278f";
-        else if (density >= 10) fillColor = "#756bb1";
-        else if (density >= 6) fillColor = "#9e9ac8";
-        else if (density >= 3) fillColor = "#bcbddc";
-        else if (density > 0) fillColor = "#dadaeb";
-        else fillColor = "#f2f0f7";  // no data
-        return {color: "#999", weight: 1, fillColor: fillColor, fillOpacity: 0.6};
-      },
+    function style(feature) {
+      console.log("density:",dict1[feature.properties.ward])
+      console.log("current ward:",feature)
+      console.log("dict",dict1)
+      return {
+        fillColor: getColor(dict1[feature.properties.ward]),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+      };
+    }
 
+    function highlightFeature(e) {
+      var layer = e.target;
 
-    });
+      layer.setStyle({
+        weight: 5,
+        color: '#666',
+        dashArray: '',
+        fillOpacity: 0.7
+      });
+
+      if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+      }
+      info.update(layer.feature.properties);
+    }
+
+    function resetHighlight(e) {
+      densityLayer.resetStyle(e.target);
+      info.update();
+    }
+
+    function zoomToFeature(e) {
+      map.fitBounds(e.target.getBounds());
+    }
+
+    function onEachFeature(feature, layer) {
+      layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomToFeature
+      });
+    }
+
+    var densityLayer = L.geoJson(d, {style: style, onEachFeature: onEachFeature});
+    layerGroup = new L.LayerGroup();
+    layerGroup.addTo(map)
     layerGroup.addLayer(densityLayer)
     console.log("tooltip d out", d)
     //create tooltip
-
-
-    var tooltip = d3.tip()
-      .attr('class', 'd3-tip')
-      .attr("id", "mytooltip")
-      //.offset([-10, 0])
-      .html(function (c) {
-        //datarow = d.get(d.features.properties)
-        //console.log("dtip",datarow)
-        /*
-
-        if(counrty_game.length !=0 ){
-            var color_rating = counrty_game[0]["Average Rating"];
-            var num_users = counrty_game[0]["Number of Users"];
-            var display = "<strong>Country: </strong>"+ c.properties.name +"<br><strong>Game: </strong>"+ selectedGame +"<br><strong>Avg Rating: </strong>"+ color_rating +"<br><strong>Number of Users: </strong>"+ num_users
-
-        return display;
-        }*/
-        console.log(c);
-        return "<strong>Wards: </strong>" + c.properties.ward + "<br><strong>density: </strong>" + c.properties.density
-
-
-      });
-
-
-    d3.select("#map").selectAll(".leaflet-overlay-pane").select("svg").call(tooltip);
-    console.log("d.features", d.features)
-    d3.select("#map").selectAll(".leaflet-overlay-pane").select("svg")
-      .selectAll("g")
-      .selectAll(".paths")
-      .data(d.features)
-      .enter()
-      .select("path")
-
-      //.append("path")
-      //.attr("class","continent")
-      //.attr("stroke","white")
-      //.on("mouseover", tooltip.show)
-      .on("mouseover", tooltip.show)
-
-      //.on("mouseout",tooltip.hide)
-      .on("mouseout", tooltip.hide)
-
-
   });
 }
+
+var info = L.control();
+
+info.onAdd = function (map) {
+  this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+  this.update();
+  return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+  this._div.innerHTML = '<h6>Chicago Construction Density</h6>' + (props ?
+    '<b> Ward No.' + props.ward + '</b><br />' + dict1[props.ward] + ' new construction permits'
+    : 'Hover over a state');
+};
+
+info.addTo(map);
+
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (map) {
+
+  var div = L.DomUtil.create('div', 'info legend'),
+    grades = [0, 5, 10, 20, 50,100],
+    labels = [];
+
+  // loop through our density intervals and generate a label with a colored square for each interval
+  for (var i = 0; i < grades.length; i++) {
+    div.innerHTML +=
+      '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+      grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+  }
+
+  return div;
+};
+
+legend.addTo(map);
+
+
+function getColor(d) {
+  return d > 100 ? '#800026' :
+    d > 50 ? '#BD0026' :
+      d > 20 ? '#E31A1C' :
+        d > 10 ? '#FC4E2A' :
+          d > 5 ? '#FD8D3C' :
+          '#FEB24C';
+}
+
+$.getJSON('new_permits_by_ward_month.json', function (data) {
+  console.log("ward data", data)
+  constructionData = data;
+});
+
+function getWardInfo(){
+  let selectedDate = getCurrentSelectedDate()
+  console.log("selected date: ",selectedDate[0])
+  filteredData=constructionData.data.filter(data=>data.WARD == 1 && data.month == selectedDate[0])
+  console.log("filtered data:",filteredData);
+  return filteredData;
+
+}
+
+
