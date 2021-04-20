@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   function drawPoints() {
     drawMarkersOnMap(createUri())
+    drawDensityMap()
   }
 
   var formatDateIntoYear = d3.timeFormat("%Y");
@@ -48,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
           timer = setInterval(step, 1000);
           button.text("Pause");
         }
-        console.log("Slider moving: " + moving);
+        //console.log("Slider moving: " + moving);
       })
 
 
@@ -77,9 +78,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
         // update(x.invert(currentValue));
       })
       .on("end", function () {
-        console.log("in end:", d3.event.x)
+        //console.log("in end:", d3.event.x)
         currentValue = d3.event.x;
-        console.log("end drag event: ", x.invert(currentValue))
+        //console.log("end drag event: ", x.invert(currentValue))
         var dateObj = new Date(x.invert(currentValue));
         update(x.invert(currentValue));
       })
@@ -126,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
   }
 
   function step() {
-    console.log("in side step")
+    //console.log("in side step")
     update(x.invert(currentValue));
     currentValue = currentValue + (targetValue / 151);
     if (currentValue > targetValue) {
@@ -135,12 +136,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
       clearInterval(timer);
       // timer = 0;
       playButton.text("Play");
-      console.log("Slider moving: " + moving);
+      //console.log("Slider moving: " + moving);
     }
   }
 
   function drawPlot(data) {
-    console.log("changing data")
+    //console.log("changing data")
     var locations = plot.selectAll(".location")
       .data(data);
 
@@ -180,7 +181,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     drawPoints();
   }
 
-  console.log("initializing markers and maps");
+  //console.log("initializing markers and maps");
     drawPoints();
     addWardsLayerToMap();
 });
@@ -219,11 +220,11 @@ function getCurrentSelectedDate() {
     selectedEndYear = selectedYear + 1;
   }
 
-  console.log(selectedMonth)
-  console.log(selectedYear)
+  //console.log(selectedMonth)
+  //console.log(selectedYear)
   var selectedStartDate = selectedYear + "-" + selectedMonth + "-01"
   var selectedEndDate = selectedEndYear + "-" + selectedEndMonth + "-01"
-  console.log(selectedStartDate + " - " + selectedEndDate)
+  //console.log(selectedStartDate + " - " + selectedEndDate)
   return [selectedStartDate, selectedEndDate];
 }
 

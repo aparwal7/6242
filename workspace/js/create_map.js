@@ -1,4 +1,4 @@
-var map = L.map('map').setView([41.8781, -87.6298], 9);
+var map = L.map('map').setView([41.8781, -87.6298], 12);
 mapLink =
   '<a href="http://openstreetmap.org">OpenStreetMap</a>';
 L.tileLayer(
@@ -9,21 +9,21 @@ L.tileLayer(
 
 var layerGroup;
 var constructionData;
-var dict1={}
+
 function createUri() {
   var dates = getCurrentSelectedDate();
   var startDate = dates[0];
   var endDate = dates[1];
   uri = "https://data.cityofchicago.org/resource/ydr8-5enu.json?$where=permit_type='PERMIT - NEW CONSTRUCTION' AND ISSUE_DATE >= '" + startDate + "' and ISSUE_DATE <='" + endDate + "'";
-  console.log("uri:", uri);
+  //console.log("uri:", uri);
   return uri;
 
 }
 
 function addWardsLayerToMap() {
-  console.log("density map checked:", showDensity)
+  //console.log("density map checked:", showDensity)
   if (!showDensity) {
-    console.log("density is turned off, returning ")
+    //console.log("density is turned off, returning ")
     return
   }
   drawDensityMap()
@@ -31,7 +31,7 @@ function addWardsLayerToMap() {
 
 
 function removeWardsLayerFromMap() {
-  console.log("removing wards from map")
+  //console.log("removing wards from map")
   map.removeLayer(layerGroup)
 }
 
@@ -56,7 +56,7 @@ function removeHeatMap() {
 
 
 function drawMarkersOnMap(url) {
-  console.log("markers not checked", showConstructionMarkers)
+  //console.log("markers not checked", showConstructionMarkers)
   if (!showConstructionMarkers) {
     return
   }
@@ -65,32 +65,30 @@ function drawMarkersOnMap(url) {
   var svg = d3.select("#map").select("svg");
   svg.selectAll("#marker").remove();
   var g = svg.append("g");
-  // console.log("in the drawpoints");
+  // //console.log("in the drawpoints");
   d3.json(url, function (data) {
     /* Add a LatLng object to each item in the dataset */
 
     var updatedLatLang = d3.entries(data).forEach(function (d) {
-      // console.log("in the draw function", d)
+      // //console.log("in the draw function", d)
       if (d.value.latitude && d.value.longitude) {
-        // console.log("latitude:", d.value.latitude)
+        // //console.log("latitude:", d.value.latitude)
         d.LatLng = new L.LatLng(d.value.latitude,
           d.value.longitude)
       }
-      console.log("adding d to dict",d.value.ward)
-       if (dict1[d.value.ward])
-            dict1[d.value.ward]=dict1[d.value.ward]+1
-            else dict1[d.value.ward]=1
     })
     //Adding density to geojson file
 
-    var feature = g.selectAll("circle")
+    var feature = g.selectAll("#marker")
       .data(d3.entries(data))
-      .enter().append("circle")
-      .style("stroke", "black")
-      .style("opacity", .6)
-      .style("fill", "red")
+      .enter().append("svg:path")
+      .attr("class", "marker")
+      .attr("d", "M0,0l-8.8-17.7C-12.1-24.3-7.4-32,0-32h0c7.4,0,12.1,7.7,8.8,14.3L0,0z")
       .attr("id", "marker")
-      .attr("r", 5);
+      .on('mouseover', function(d) {
+            d3.select(this).raise();
+        });
+
 
     map.on("viewreset", update);
     update();
@@ -98,7 +96,7 @@ function drawMarkersOnMap(url) {
     function update() {
       feature.attr("transform",
         function (d) {
-          // console.log("in the transform function d", d)
+          // //console.log("in the transform function d", d)
           if (d.value.latitude && d.value.longitude) {
             var temp = new L.LatLng(d.value.latitude,
               d.value.longitude)
@@ -114,14 +112,43 @@ function drawMarkersOnMap(url) {
 }
 
 function drawDensityMap() {
+  //console.log("density map checked:", showDensity)
+  if (!showDensity) {
+    //console.log("density is turned off, returning ")
+    return
+  }
   d3.json("chicago_2015_wards.geojson", function (d) {
     //changing color of polygons
+    function getColor(feature) {
+      //console.log("feature", feature, feature.properties.ward)
+      let permits = +getWardInfo(feature.properties.ward)
+      // //console.log("color for permits:", permits)
+      return permits > 100 ? '#800026' :
+        permits > 50 ? '#BD0026' :
+          permits > 20 ? '#E31A1C' :
+            permits > 10 ? '#FC4E2A' :
+              permits > 5 ? '#FD8D3C' :
+                '#FEB24C';
+    }
+
+    function getWardInfo(selectedWardNumber) {
+      let selectedDate = getCurrentSelectedDate()
+      //console.log("selected date: ", selectedDate[0], selectedWardNumber)
+      filteredData = constructionData.data.filter(data => data.WARD == selectedWardNumber && data.month == selectedDate[0])
+
+      if (filteredData.length === 0) {
+        //console.log("no data found, returning 0, for", selectedDate[0], selectedWardNumber)
+        return 0;
+      }
+      //console.log("filtered data:", filteredData[0].permits);
+      return filteredData[0].permits;
+    }
+
+    //console.log("drawing density map for d:", d)
+
     function style(feature) {
-      console.log("density:",dict1[feature.properties.ward])
-      console.log("current ward:",feature)
-      console.log("dict",dict1)
       return {
-        fillColor: getColor(dict1[feature.properties.ward]),
+        fillColor: getColor(feature),
         weight: 2,
         opacity: 1,
         color: 'white',
@@ -129,6 +156,7 @@ function drawDensityMap() {
         fillOpacity: 0.7
       };
     }
+
 
     function highlightFeature(e) {
       var layer = e.target;
@@ -167,7 +195,7 @@ function drawDensityMap() {
     layerGroup = new L.LayerGroup();
     layerGroup.addTo(map)
     layerGroup.addLayer(densityLayer)
-    console.log("tooltip d out", d)
+    //console.log("tooltip d out", d)
     //create tooltip
   });
 }
@@ -183,9 +211,31 @@ info.onAdd = function (map) {
 // method that we will use to update the control based on feature properties passed
 info.update = function (props) {
   this._div.innerHTML = '<h6>Chicago Construction Density</h6>' + (props ?
-    '<b> Ward No.' + props.ward + '</b><br />' + dict1[props.ward] + ' new construction permits'
-    : 'Hover over a state');
+    '<b> Ward No.' + props.ward + '</b><br />' + getWardInfoForLegend(props.ward) + ' new construction permits'
+    : 'Select ward-wise density and Hover over ward');
 };
+
+function getColorForLegend(d) {
+  return d > 100 ? '#800026' :
+    d > 50 ? '#BD0026' :
+      d > 20 ? '#E31A1C' :
+        d > 10 ? '#FC4E2A' :
+          d > 5 ? '#FD8D3C' :
+            '#FEB24C';
+}
+
+function getWardInfoForLegend(selectedWardNumber) {
+  let selectedDate = getCurrentSelectedDate()
+  //console.log("selected date: ", selectedDate[0], selectedWardNumber)
+  filteredData = constructionData.data.filter(data => data.WARD == selectedWardNumber && data.month == selectedDate[0])
+
+  if (filteredData.length === 0) {
+    //console.log("no data found, returning 0, for", selectedDate[0], selectedWardNumber)
+    return 0;
+  }
+  //console.log("filtered data:", filteredData[0].permits);
+  return filteredData[0].permits;
+}
 
 info.addTo(map);
 
@@ -194,13 +244,13 @@ var legend = L.control({position: 'bottomright'});
 legend.onAdd = function (map) {
 
   var div = L.DomUtil.create('div', 'info legend'),
-    grades = [0, 5, 10, 20, 50,100],
+    grades = [0, 5, 10, 20, 50, 100],
     labels = [];
 
   // loop through our density intervals and generate a label with a colored square for each interval
   for (var i = 0; i < grades.length; i++) {
     div.innerHTML +=
-      '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+      '<i style="background:' + getColorForLegend(grades[i] + 1) + '"></i> ' +
       grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
   }
 
@@ -210,27 +260,11 @@ legend.onAdd = function (map) {
 legend.addTo(map);
 
 
-function getColor(d) {
-  return d > 100 ? '#800026' :
-    d > 50 ? '#BD0026' :
-      d > 20 ? '#E31A1C' :
-        d > 10 ? '#FC4E2A' :
-          d > 5 ? '#FD8D3C' :
-          '#FEB24C';
-}
-
 $.getJSON('new_permits_by_ward_month.json', function (data) {
-  console.log("ward data", data)
+  //console.log("ward data", data)
   constructionData = data;
 });
 
-function getWardInfo(){
-  let selectedDate = getCurrentSelectedDate()
-  console.log("selected date: ",selectedDate[0])
-  filteredData=constructionData.data.filter(data=>data.WARD == 1 && data.month == selectedDate[0])
-  console.log("filtered data:",filteredData);
-  return filteredData;
 
-}
 
 

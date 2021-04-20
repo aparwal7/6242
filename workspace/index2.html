@@ -16,7 +16,6 @@
   <link rel="stylesheet" href="css/main.css">
 
   <script src="https://d3js.org/d3.v4.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
   <script src="https://d19vzq90twjlae.cloudfront.net/leaflet-0.7/leaflet.js">
 
 
@@ -32,7 +31,10 @@
     <div class="ml-2"><h3>WASP - Construction Density Analysis for Chicago</h3></div>
 
   </div>
-  <div id="map" style="width: 1200px; height: 700px"></div>
+  <div class="row">
+    <div id="map" style="width: 1200px; height: 700px"></div>
+    <div id="construction-permits-analysis" class="svg-container"></div>
+  </div>
   <div id="vis">
     <div class="d-flex flex-row">
       <div class="p-2">
@@ -59,28 +61,30 @@
     </div>
   </div>
 </div>
-  <script>
-    let host=window.location.hostname
-    if(host==="localhost"){
-      src="/js/"
-    }else{
-      src="https://dva-wasp.s3.amazonaws.com/workspace/js/"
-    }
-    let createmap = document.createElement("script");
-    createmap.setAttribute("src", src+"create_map.js");
-    createmap.setAttribute("type","text/javascript")
-    document.body.appendChild(createmap);
+<!--  <script>-->
+<!--    let host=window.location.hostname-->
+<!--    if(host==="localhost"){-->
+<!--      src="/js/"-->
+<!--    }else{-->
+<!--      src="https://dva-wasp.s3.amazonaws.com/workspace/js/"-->
+<!--    }-->
+<!--    let createmap = document.createElement("script");-->
+<!--    createmap.setAttribute("src", src+"create_map.js");-->
+<!--    createmap.setAttribute("type","text/javascript")-->
+<!--    document.body.appendChild(createmap);-->
 
-     let sliderjs = document.createElement("script");
-    sliderjs.setAttribute("src", src+"slider.js");
-     createmap.setAttribute("type","text/javascript")
-    document.body.appendChild(sliderjs);
+<!--     let sliderjs = document.createElement("script");-->
+<!--    sliderjs.setAttribute("src", src+"slider.js");-->
+<!--     createmap.setAttribute("type","text/javascript")-->
+<!--    document.body.appendChild(sliderjs);-->
 
-  </script>
+<!--  </script>-->
 <script type="text/javascript" src="zipcodes.geojson"></script>
 <script type="text/javascript" src="chicago_wards1.geojson"></script>
-<script type="text/javascript" src="new_permits_by_ward_month.json"></script>
-<!--	<script type="text/javascript" src="https://dva-wasp.s3.amazonaws.com/workspace/js/create_map.js"></script>-->
-<!--  <script  type="text/javascript"  src="https://dva-wasp.s3.amazonaws.com/workspace/js/slider.js"></script>-->
+<script type="text/csv" src="analysis_data.csv"></script>
+	<script type="text/javascript" src="/js/create_map.js"></script>
+  <script  type="text/javascript"  src="/js/slider.js"></script>
+<script  type="text/javascript"  src="/js/create_analysis.js"></script>
+
 </body>
 </html>

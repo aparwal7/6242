@@ -1,28 +1,4 @@
 {
-    "schema":{
-        "fields":[
-            {
-                "name":"index",
-                "type":"integer"
-            },
-            {
-                "name":"WARD",
-                "type":"integer"
-            },
-            {
-                "name":"month",
-                "type":"string"
-            },
-            {
-                "name":"permits",
-                "type":"integer"
-            }
-        ],
-        "primaryKey":[
-            "index"
-        ],
-        "pandas_version":"0.20.0"
-    },
     "data":[
         {
             "index":0,
@@ -1047,7 +1023,7 @@
         {
             "index":170,
             "WARD":2,
-            "month":"2009-1-1-01",
+            "month":"2009-1-01",
             "permits":1
         },
         {
@@ -5189,6 +5165,12 @@
             "WARD":9,
             "month":"2019-9-01",
             "permits":1
+        },
+        {
+            "index":860,
+            "WARD":9,
+            "month":"2011-9-01",
+            "permits":0
         },
         {
             "index":861,
