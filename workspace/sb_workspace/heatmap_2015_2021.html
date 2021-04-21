@@ -2,20 +2,10 @@
 <head>
     <meta charset="utf-8">
     <title>Chicago New Permits Heatmap 2015 - 2021</title>
-    <script type="text/javascript" src="./js/d3.v5.min.js"></script>
-    <script type="text/javascript" src="./js/d3-tip.min.js"></script> 
+    <script type="text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
     <script type="text/javascript" src="./js/linecharts.js"></script>
     <link rel="stylesheet" type="text/css" href="./css/linecharts.css">
-    <style>
-    .d3-tip {
-      line-height: 1;
-      //font-weight: bold;
-      padding: 12px;
-      background: rgba(43,43,43, 0.8);
-      color: #fff;
-      border-radius: 2px;
-    }      
-    </style>
+    <style></style>
 </head>
 <body>
 <div id="container-A" class="svg-container" style="position: absolute; left: 0px; top: 0px;">
@@ -27,10 +17,11 @@
 //var colorScheme = d3.scaleOrdinal(d3.schemeCategory10);
 var colorScheme = d3.scaleOrdinal(d3.schemeTableau10);
 
-const timeConv = d3.timeParse("%Y-%m");
+// const timeConv = d3.timeParse("%Y-%m");
+const timeConvYM = d3.timeParse("%Y-%m");
+const timeConvYMD = d3.timeParse("%Y-%m-%d");
 
 function labelMaker (s) {return ("Ward " + s); };
-
 
 // enter code to create color scale
 // https://colorbrewer2.org/?type=sequential&scheme=Oranges&n=4
@@ -106,11 +97,10 @@ function heatColorAsQuartiles (permits) {
 };
 
 //Read the data
-d3.csv("new_permits_by_ward_month.csv").then( buildMyHeatMap );
+// d3.csv("new_permits_by_ward_month.csv").then( buildMyHeatMap );
+d3.csv("nogap-new_permits_by_ward_yyyy_mm_dd.csv", function(error, array_data) {
 
-function buildMyHeatMap (array_data) {
-
-  let xDomain = d3.extent(array_data, function(d){ if (d.month >= "2015-01") return timeConv(d.month)});
+  let xDomain = d3.extent(array_data, function(d){ if (d.month >= "2015-01") return timeConvYMD(d.month)});
 
   // Y - Wards: 1 to 50
   let yDomain = [...new Set(array_data.map(item => +item.WARD))];
@@ -163,7 +153,7 @@ function buildMyHeatMap (array_data) {
       .enter()
       .filter(function(d, i) { return (d.month >= "2015-01");} )
       .append("rect")
-      .attr("x", function(d) { return xScale(timeConv(d.month)); })
+      .attr("x", function(d) { return xScale(timeConvYMD(d.month)); })
       .attr("y", function(d) { return y(d.WARD); })
       //.attr("width", x.bandwidth() )
       //.attr("height", y.bandwidth() )
@@ -176,50 +166,40 @@ function buildMyHeatMap (array_data) {
     .on("mousemove", mousemove)
     .on("mouseleave", mouseleave);
 
-};
+});
+
 
 
 // Three function that change the tooltip when user hover / move / leave a cell
 var mouseover = function(d) {
     tooltip.style("opacity", 1)
 }
-
 var mousemove = function(d) {
-    // console.log("mouse position: ", d3.mouse(this));
     tooltip
-      .html("Ward: " + d.WARD + "<br>Month: " + d.month + "<br>Permits: " + d.permits)
-      .style("left", (d3.mouse(this)[0]+70) + "px")
-      .style("top", (d3.mouse(this)[1]) + "px")
-      //.attr("width", 150)
-      //.attr("height", 100)
+      .html(updateTooltipMarkup(d))
+      .style('top', (d3.event.layerY + 10) + 'px') // always 10px below the cursor
+      .style('left', (d3.event.layerX + 10) + 'px'); // always 10px to the right of the mouse
 }
 var mouseleave = function(d) {
     tooltip.style("opacity", 0)
 }
 
 var tooltip = d3.select("body").append("div")
-      .style("font-size", "12px")
+      .style("font-size", "10px")
       .style("width","80px")
-      .style("height","40px")
+      .style("height","35px")
       .style("background","#C3B3E5")
       .style("background","white")
-      .style("opacity","1")
+      .style("opacity","0")
       .style("position","absolute")
       //.style("visibility","hidden")
       .style("box-shadow","0px 0px 6px #7861A5")
       .style("padding","10px");
 
-// create a tooltip
-var tooltip_v0 = d3.select("#container-A")
-      .append("div")
-      .style("opacity", 0)
-      .attr("class", "tooltip")
-      .style("background-color", "white")
-      .style("border", "solid")
-      .style("border-width", "2px")
-      .style("border-radius", "5px")
-      .style("padding", "5px")
-
+function updateTooltipMarkup(d) {
+    let markup = "Ward: " + d.WARD + "<br>Month: " + d.month + "<br>Permits: " + d.permits + "";
+    return markup;
+} 
 
 // TODO: implement better tooltip
 
