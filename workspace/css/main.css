@@ -154,6 +154,15 @@ body {
 	transition: all .2s ease-in-out;
 }
 
+.marker-lat-long {
+	fill: red;
+	//stroke: #31558d;
+	fill-opacity: .75;
+	transition: all .2s ease-in-out;
+}
+
+
+
 .axis line{
 stroke: #706f6f;
 stroke-width: 0.5;
@@ -174,11 +183,7 @@ font-family: Georgia;
 font-size: 120%;
 }
 
-/* LINE CHART */
-path {
-fill: none;
-stroke: #ed3700;
-}
+
 
 div.svg-container{
     border: 2px solid #636363;

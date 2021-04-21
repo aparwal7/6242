@@ -109,6 +109,53 @@ function drawMarkersOnMap(url) {
     }
   });
 
+
+
+ /*
+  code for Brian
+             // ..
+            */
+  /*d3
+  d3.json("<your_json_file>.json",function(data){
+
+    //data = full data
+
+    //filter data for selected month
+
+    selectedDate=getCurrentSelectedDate()[0];
+    //2013-12-01
+    filteredData = data.filter(data => data.month == selectedDate)
+    avgLatitude = filteredData.Latitude
+    avgLongitude = filteredData.Longitude
+    latLang = new L.LatLng(avgLatitude,
+          avgLongitude)
+
+
+    var feature = g.selectAll("#marker-lat-lang")
+      .data(latLang)
+      .enter().append("svg:path")
+      .attr("class", "marker-lat-long")
+      .attr("d", "M0,0l-8.8-17.7C-12.1-24.3-7.4-32,0-32h0c7.4,0,12.1,7.7,8.8,14.3L0,0z")
+      .attr("id", "marker")
+      .on('mouseover', function(d) {
+            d3.select(this).raise();
+        });
+
+
+    map.on("viewreset", update);
+    update();
+
+    function update() {
+      feature.attr("transform",
+        function (d) {
+            console.log("in update function for lat lang:",d)
+            return "translate(" +
+              map.latLngToLayerPoint(d).x + "," +
+              map.latLngToLayerPoint(d).y + ")";
+        }
+      )
+    }
+  })*/
 }
 
 function drawDensityMap() {
@@ -123,17 +170,17 @@ function drawDensityMap() {
       //console.log("feature", feature, feature.properties.ward)
       let permits = +getWardInfo(feature.properties.ward)
       // //console.log("color for permits:", permits)
-      return permits > 100 ? '#800026' :
-        permits > 50 ? '#BD0026' :
-          permits > 20 ? '#E31A1C' :
-            permits > 10 ? '#FC4E2A' :
-              permits > 5 ? '#FD8D3C' :
+      return permits > 70 ? '#800026' :
+        permits > 30 ? '#BD0026' :
+          permits > 15 ? '#E31A1C' :
+            permits > 8 ? '#FC4E2A' :
+              permits > 3 ? '#FD8D3C' :
                 '#FEB24C';
     }
 
     function getWardInfo(selectedWardNumber) {
       let selectedDate = getCurrentSelectedDate()
-      //console.log("selected date: ", selectedDate[0], selectedWardNumber)
+      // console.log("selected date: ", selectedDate[0] )
       filteredData = constructionData.data.filter(data => data.WARD == selectedWardNumber && data.month == selectedDate[0])
 
       if (filteredData.length === 0) {
@@ -260,7 +307,7 @@ legend.onAdd = function (map) {
 legend.addTo(map);
 
 
-$.getJSON('new_permits_by_ward_month.json', function (data) {
+$.getJSON('new_permits_by_ward_yyyy_mm_dd.json', function (data) {
   //console.log("ward data", data)
   constructionData = data;
 });

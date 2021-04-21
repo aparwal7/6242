@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="icon"
-      type="image/png"
-      href="https://dva-wasp.s3.amazonaws.com/workspace/img/wasp-sting_38742.png">
+  <link rel="icon"
+        type="image/png"
+        href="https://dva-wasp.s3.amazonaws.com/workspace/img/wasp-sting_38742.png">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
         integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
@@ -58,33 +58,43 @@
           </label>
         </div>
       </div>
+      <div class="p-2 align-self-center">
+        <div class="d-flex flex-row border border-primary rounded">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="heatMap">
+            <label class="form-check-label h5 text-info" for="heatMap">
+              <i class="fas fa-draw-polygon"></i>
+              2022
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="heatMap">
+            <label class="form-check-label h5 text-info" for="heatMap">
+              <i class="fas fa-draw-polygon"></i>
+              2023
+            </label>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
-<!--  <script>-->
-<!--    let host=window.location.hostname-->
-<!--    if(host==="localhost"){-->
-<!--      src="/js/"-->
-<!--    }else{-->
-<!--      src="https://dva-wasp.s3.amazonaws.com/workspace/js/"-->
-<!--    }-->
-<!--    let createmap = document.createElement("script");-->
-<!--    createmap.setAttribute("src", src+"create_map.js");-->
-<!--    createmap.setAttribute("type","text/javascript")-->
-<!--    document.body.appendChild(createmap);-->
 
-<!--     let sliderjs = document.createElement("script");-->
-<!--    sliderjs.setAttribute("src", src+"slider.js");-->
-<!--     createmap.setAttribute("type","text/javascript")-->
-<!--    document.body.appendChild(sliderjs);-->
-
-<!--  </script>-->
 <script type="text/javascript" src="zipcodes.geojson"></script>
 <script type="text/javascript" src="chicago_wards1.geojson"></script>
 <script type="text/csv" src="analysis_data.csv"></script>
-	<script type="text/javascript" src="/js/create_map.js"></script>
-  <script  type="text/javascript"  src="/js/slider.js"></script>
-<script  type="text/javascript"  src="/js/create_analysis.js"></script>
+<script type="text/javascript" src="/js/create_map.js"></script>
+<script type="text/javascript" src="/js/slider.js"></script>
+<script type="text/javascript" src="/js/create_analysis.js"></script>
+
+<!--<script type="text/javascript" src="zipcodes.geojson"></script>-->
+<!--<script type="text/javascript" src="chicago_wards1.geojson"></script>-->
+<!--<script type="text/csv" src="analysis_data.csv"></script>-->
+<!--<script type="text/javascript" src="https://dva-wasp.s3.amazonaws.com/workspace/js/create_map.js"></script>-->
+<!--<script type="text/javascript" src="https://dva-wasp.s3.amazonaws.com/workspace/js/slider.js"></script>-->
+<!--<script type="text/javascript" src="https://dva-wasp.s3.amazonaws.com/workspace/js/create_analysis.js"></script>-->
+
 
 </body>
 </html>
