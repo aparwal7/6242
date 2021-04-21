@@ -1,7 +1,7 @@
 $(document).ready(function () {
   console.log("drawing analysis")
   // 2. Use the margin convention practice
-  const width = 600;
+  const width = 400;
   const height = 500;
   const margin = 40;
   const padding = 40;
@@ -13,8 +13,8 @@ $(document).ready(function () {
     .attr("viewBox", "-"
       + 0 + " -"
       +0 + " "
-      + (width + adj *2) + " "
-      + (height + adj * 2))
+      + (width ) + " "
+      + (height))
     .style("padding", padding)
     .style("margin", margin)
     .attr("width", width)

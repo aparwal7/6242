@@ -161,6 +161,20 @@ body {
 	transition: all .2s ease-in-out;
 }
 
+.marker-lat-lang-p1 {
+	fill: limegreen;
+	//stroke: #31558d;
+	fill-opacity: .75;
+	transition: all .2s ease-in-out;
+}
+
+.marker-lat-lang-p1 {
+	fill: purple;
+	//stroke: #31558d;
+	fill-opacity: .75;
+	transition: all .2s ease-in-out;
+}
+
 
 
 .axis line{

@@ -3,7 +3,7 @@ var showDensity=false;
 
 var margin = {top: 50, right: 50, bottom: 0, left: 50},
   width = 960 - margin.left - margin.right,
-  height = 250 - margin.top - margin.bottom;
+  height = 90 - margin.top - margin.bottom;
 var startDate = new Date("2006-03-01"),
   endDate = new Date("2021-03-01");
 var x = d3.scaleTime()
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
   slider = svg.append("g")
     .attr("class", "slider")
-    .attr("transform", "translate(" + margin.left + "," + height / 5 + ")");
+    .attr("transform", "translate(" + margin.left + "," + height + ")");
 
   slider.append("line")
     .attr("class", "track")
@@ -187,9 +187,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
 });
 
 
-$("#marker").change(function () {
+$("#marker-chicago").change(function () {
   if (this.checked) {
     showConstructionMarkers = true;
+    removeWardsLayerFromMap();
     addMarkersOnMap();
   } else {
     showConstructionMarkers = false;
@@ -200,6 +201,7 @@ $("#marker").change(function () {
 $("#heatMap").change(function () {
   if (this.checked) {
     showDensity = true;
+    removeMarkersFromMap()
     addWardsLayerToMap();
   } else {
     showDensity=false;

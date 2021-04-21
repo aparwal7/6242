@@ -32,68 +32,99 @@
 
   </div>
   <div class="row">
-    <div id="map" style="width: 1200px; height: 700px"></div>
+    <div id="map" style="width: 900px; height: 600px"></div>
     <div id="construction-permits-analysis" class="svg-container"></div>
   </div>
-  <div id="vis">
+  <div id="controls" class="pt-2">
+    <div id="vis" class="pt-1">
+    </div>
     <div class="d-flex flex-row">
-      <div class="p-2">
-        <button type="button" class="btn btn-primary d-flex justify-content-start" id="play-button">Play</button>
-      </div>
       <div class="p-2 align-self-center">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="marker" checked>
-          <label class="form-check-label h5 text-info" for="marker">
-            <i class="fas fa-map-marker-alt"></i>
-            Construction Permit Markers
-          </label>
-        </div>
-      </div>
-      <div class="p-2 align-self-center">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="heatMap">
-          <label class="form-check-label h5 text-info" for="heatMap">
-            <i class="fas fa-draw-polygon"></i>
-            Ward-wise Density
-          </label>
-        </div>
-      </div>
-      <div class="p-2 align-self-center">
-        <div class="d-flex flex-row border border-primary rounded">
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="heatMap">
-            <label class="form-check-label h5 text-info" for="heatMap">
-              <i class="fas fa-draw-polygon"></i>
-              2022
-            </label>
+        <div class="card border border-primary rounded">
+          <div class="card-header">
+            <h5 class="text-primary">Automate Transition</h5><span>Pause/Play to visualize changes <br/>as the slider moves along time.</span>
+
           </div>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="heatMap">
-            <label class="form-check-label h5 text-info" for="heatMap">
-              <i class="fas fa-draw-polygon"></i>
-              2023
-            </label>
+          <div class="card-body">
+            <div class="p-2">
+              <button type="button" class="btn btn-primary d-flex justify-content-start" id="play-button">Play</button>
+            </div>
           </div>
         </div>
+      </div>
+      <div class="p-2 align-self-center">
+        <div class="card border border-primary rounded">
+          <div class="card-header">
+            <h5 class="text-primary">Map Controls</h5>
+
+          </div>
+          <div class="card-body">
+            <div class="d-flex flex-row">
+              <div class="p-2 align-self-center">
+                <div class="form-check">
+                  <input type="radio" class="btn-check" name="options-outlined" id="marker-chicago" autocomplete="off" checked>
+                  <label class="btn btn-outline-primary" for="marker-chicago"> <i class="fas fa-map-marker-alt"></i>
+                    Construction Permit Markers</label>
+                </div>
+              </div>
+              <div class="p-2 align-self-center">
+                <div class="form-check">
+                  <input type="radio" class="btn-check" name="options-outlined" id="heatMap" autocomplete="off">
+                  <label class="btn btn-outline-primary" for="heatMap"><i class="fas fa-draw-polygon"></i>
+                    Ward-wise Density</label>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-2 align-self-center">
+
+        <div class="card border border-primary rounded">
+          <div class="card-header">
+            <h5 class="text-primary">Projections</h5> <span>Calculated using Multivariate ARIMA</span>
+
+          </div>
+          <div class="card-body">
+            <div class="d-flex flex-row">
+              <div class="form-check pl-5">
+                <input class="form-check-input projections" type="checkbox" value="" id="projection_1" checked>
+                <label class="form-check-label h5 text-info" for="projection_1">
+                  <i class="fas fa-chart-line"></i>
+                  2022
+                </label>
+              </div>
+              <div class="form-check pl-5">
+                <input class="form-check-input projections" type="checkbox" value="" id="projection_2" checked>
+                <label class="form-check-label h5 text-info" for="projection_2">
+                  <i class="fas fa-chart-line"></i>
+                  2023
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
     </div>
   </div>
 </div>
 
-<script type="text/javascript" src="zipcodes.geojson"></script>
-<script type="text/javascript" src="chicago_wards1.geojson"></script>
-<script type="text/csv" src="analysis_data.csv"></script>
-<script type="text/javascript" src="/js/create_map.js"></script>
-<script type="text/javascript" src="/js/slider.js"></script>
-<script type="text/javascript" src="/js/create_analysis.js"></script>
-
 <!--<script type="text/javascript" src="zipcodes.geojson"></script>-->
 <!--<script type="text/javascript" src="chicago_wards1.geojson"></script>-->
 <!--<script type="text/csv" src="analysis_data.csv"></script>-->
-<!--<script type="text/javascript" src="https://dva-wasp.s3.amazonaws.com/workspace/js/create_map.js"></script>-->
-<!--<script type="text/javascript" src="https://dva-wasp.s3.amazonaws.com/workspace/js/slider.js"></script>-->
-<!--<script type="text/javascript" src="https://dva-wasp.s3.amazonaws.com/workspace/js/create_analysis.js"></script>-->
+<!--<script type="text/javascript" src="/js/create_map.js"></script>-->
+<!--<script type="text/javascript" src="/js/slider.js"></script>-->
+<!--<script type="text/javascript" src="/js/create_analysis.js"></script>-->
+
+<script type="text/javascript" src="zipcodes.geojson"></script>
+<script type="text/javascript" src="chicago_wards1.geojson"></script>
+<script type="text/csv" src="analysis_data.csv"></script>
+<script type="text/javascript" src="https://dva-wasp.s3.amazonaws.com/workspace/js/create_map.js"></script>
+<script type="text/javascript" src="https://dva-wasp.s3.amazonaws.com/workspace/js/slider.js"></script>
+<script type="text/javascript" src="https://dva-wasp.s3.amazonaws.com/workspace/js/create_analysis.js"></script>
 
 
 </body>

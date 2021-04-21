@@ -32,7 +32,11 @@ function addWardsLayerToMap() {
 
 function removeWardsLayerFromMap() {
   //console.log("removing wards from map")
-  map.removeLayer(layerGroup)
+  try {
+    map.removeLayer(layerGroup)
+  }catch (err){
+
+  }
 }
 
 
@@ -64,6 +68,7 @@ function drawMarkersOnMap(url) {
 
   var svg = d3.select("#map").select("svg");
   svg.selectAll("#marker").remove();
+   svg.selectAll("#marker-lat-lang").remove();
   var g = svg.append("g");
   // //console.log("in the drawpoints");
   d3.json(url, function (data) {
@@ -115,8 +120,7 @@ function drawMarkersOnMap(url) {
   code for Brian
              // ..
             */
-  /*d3
-  d3.json("<your_json_file>.json",function(data){
+  d3.json("monthly_coordinates.json",function(data){
 
     //data = full data
 
@@ -124,19 +128,23 @@ function drawMarkersOnMap(url) {
 
     selectedDate=getCurrentSelectedDate()[0];
     //2013-12-01
-    filteredData = data.filter(data => data.month == selectedDate)
-    avgLatitude = filteredData.Latitude
-    avgLongitude = filteredData.Longitude
+    // console.log("data for lat and long:",data , selectedDate)
+    filteredData = data.data.filter(data_lat_lang => data_lat_lang.month === selectedDate)[0]
+    // console.log("filtereddata:",filteredData)
+    avgLatitude = filteredData.avg_latitude
+    avgLongitude = filteredData.avg_longitude
+    // console.log("mean lat lang:",avgLatitude, avgLongitude)
     latLang = new L.LatLng(avgLatitude,
           avgLongitude)
+    data_array=[latLang]
 
 
     var feature = g.selectAll("#marker-lat-lang")
-      .data(latLang)
+      .data(data_array)
       .enter().append("svg:path")
       .attr("class", "marker-lat-long")
       .attr("d", "M0,0l-8.8-17.7C-12.1-24.3-7.4-32,0-32h0c7.4,0,12.1,7.7,8.8,14.3L0,0z")
-      .attr("id", "marker")
+      .attr("id", "marker-lat-lang")
       .on('mouseover', function(d) {
             d3.select(this).raise();
         });
@@ -148,15 +156,135 @@ function drawMarkersOnMap(url) {
     function update() {
       feature.attr("transform",
         function (d) {
-            console.log("in update function for lat lang:",d)
+            // console.log("in update function for lat lang:",d)
             return "translate(" +
               map.latLngToLayerPoint(d).x + "," +
               map.latLngToLayerPoint(d).y + ")";
         }
       )
     }
-  })*/
+  })
+
+  d3.json("monthly_coordinates.json",function(data){
+
+    //data = full data
+
+    //filter data for selected month
+
+    selectedDate=getCurrentSelectedDate()[0];
+    //2013-12-01
+    // console.log("data for lat and long:",data , selectedDate)
+    filteredData = data.data.filter(data_lat_lang => data_lat_lang.month === selectedDate)[0]
+    console.log("filtereddata:",filteredData)
+    avgLatitude = filteredData.avg_latitude
+    avgLongitude = filteredData.avg_longitude
+    // console.log("mean lat lang:",avgLatitude, avgLongitude)
+    latLang = new L.LatLng(avgLatitude,
+          avgLongitude)
+    data_array=[latLang]
+
+
+    var feature = g.selectAll("#marker-lat-lang")
+      .data(data_array)
+      .enter().append("svg:path")
+      .attr("class", "marker-lat-long")
+      .attr("d", "M0,0l-8.8-17.7C-12.1-24.3-7.4-32,0-32h0c7.4,0,12.1,7.7,8.8,14.3L0,0z")
+      .attr("id", "marker-lat-lang")
+      .on('mouseover', function(d) {
+            d3.select(this).raise();
+        });
+
+
+    map.on("viewreset", update);
+    update();
+
+    function update() {
+      feature.attr("transform",
+        function (d) {
+            // console.log("in update function for lat lang:",d)
+            return "translate(" +
+              map.latLngToLayerPoint(d).x + "," +
+              map.latLngToLayerPoint(d).y + ")";
+        }
+      )
+    }
+  })
 }
+
+function drawProjection(){
+  var svg = d3.select("#map").select("svg");
+  var g = svg.append("g");
+  console.log("drawing projection for 2022")
+  var avgLatitude,avgLongitude,classname;
+
+
+if(!($('#projection_1').is(":checked") || $('#projection_2').is(":checked"))){
+  console.log("both are unchecked, returning")
+   svg.selectAll("#marker-lat-lang-p1").remove();
+   svg.selectAll("#marker-lat-lang-p2").remove();
+  return;
+
+}
+
+  if($('#projection_1').is(":checked")){
+    console.log("2022 is checked.")
+     avgLatitude = 41.8688904885
+     avgLongitude =-87.670050483
+     classname="marker-lat-lang-p1"
+    drawProjections();
+  } else{
+    svg.selectAll("#marker-lat-lang-p1").remove();
+  }
+
+  if($('#projection_2').is(":checked")){
+    console.log("2023 is checked.")
+     avgLatitude = 41.8695888881
+     avgLongitude =-87.6708447174
+    classname ="marker-lat-lang-p2"
+    drawProjections();
+  }else{
+    svg.selectAll("#marker-lat-lang-p2").remove();
+  }
+
+
+  function drawProjections() {
+    // console.log("mean lat lang:", avgLatitude, avgLongitude)
+    latLang = new L.LatLng(avgLatitude,
+      avgLongitude)
+    data_array = [latLang]
+
+    var plus = d3.symbol().type(d3.symbolCross).size(256)
+    var feature = g.selectAll(classname)
+      .data(data_array)
+      .enter().append("svg:path")
+      .attr("class", classname)
+      .attr("d", plus)
+      .attr("id", classname)
+      .on('mouseover', function (d) {
+        d3.select(this).raise();
+      });
+
+
+    map.on("viewreset", update);
+    update();
+
+    function update() {
+      feature.attr("transform",
+        function (d) {
+          // console.log("in update function for lat lang:", d)
+          return "translate(" +
+            map.latLngToLayerPoint(d).x + "," +
+            map.latLngToLayerPoint(d).y + ")";
+        }
+      )
+    }
+  }
+
+
+};
+
+$(".projections").on("change",drawProjection)
+drawProjection()
 
 function drawDensityMap() {
   //console.log("density map checked:", showDensity)
@@ -164,6 +292,7 @@ function drawDensityMap() {
     //console.log("density is turned off, returning ")
     return
   }
+  removeWardsLayerFromMap();
   d3.json("chicago_2015_wards.geojson", function (d) {
     //changing color of polygons
     function getColor(feature) {
@@ -263,11 +392,11 @@ info.update = function (props) {
 };
 
 function getColorForLegend(d) {
-  return d > 100 ? '#800026' :
-    d > 50 ? '#BD0026' :
-      d > 20 ? '#E31A1C' :
-        d > 10 ? '#FC4E2A' :
-          d > 5 ? '#FD8D3C' :
+  return d > 70 ? '#800026' :
+    d > 30 ? '#BD0026' :
+      d > 15 ? '#E31A1C' :
+        d > 8 ? '#FC4E2A' :
+          d > 3 ? '#FD8D3C' :
             '#FEB24C';
 }
 
@@ -291,7 +420,7 @@ var legend = L.control({position: 'bottomright'});
 legend.onAdd = function (map) {
 
   var div = L.DomUtil.create('div', 'info legend'),
-    grades = [0, 5, 10, 20, 50, 100],
+    grades = [0, 3, 8, 15, 30, 70],
     labels = [];
 
   // loop through our density intervals and generate a label with a colored square for each interval
@@ -305,6 +434,32 @@ legend.onAdd = function (map) {
 };
 
 legend.addTo(map);
+
+var legend2 = L.control({position: 'bottomright'});
+
+legend2.onAdd = function (map) {
+
+  var div = L.DomUtil.create('div', 'info legend'),
+    grades = [0, 3, 8, 15, 30, 70],
+    labels = [];
+
+  // loop through our density intervals and generate a label with a colored square for each interval
+
+
+  div.innerHTML +=
+      '<img src="https://dva-wasp.s3.amazonaws.com/workspace/img/Legend-blue-marker.png"> <span>Co-ordinates of construction permits</span><br/>'
+  div.innerHTML +=
+      '<img src="https://dva-wasp.s3.amazonaws.com/workspace/img/Legend-red-marker.png"> <span>Center of all construction permits for the month</span><br/>'
+  div.innerHTML +=
+      '<img src="https://dva-wasp.s3.amazonaws.com/workspace/img/Legend-2022.png"> <span>Projected Center for 2022</span><br/>'
+  div.innerHTML +=
+      '<img src="https://dva-wasp.s3.amazonaws.com/workspace/img/Legend-2023.png"> <span>Projected Center for 2023</span><br/>'
+
+
+  return div;
+};
+
+legend2.addTo(map);
 
 
 $.getJSON('new_permits_by_ward_yyyy_mm_dd.json', function (data) {
