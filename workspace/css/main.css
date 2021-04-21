@@ -203,3 +203,30 @@ div.svg-container{
     border: 2px solid #636363;
     margin-bottom: 20px;
 }
+
+
+path.line-analytics {
+		    fill: none;
+		    stroke: red;
+		    stroke-width: 3px;
+	    }
+
+		.axis path,
+		.axis line {
+		  fill: none;
+		  stroke: slategray;
+		  shape-rendering: crispEdges;
+		}
+
+path.line-analytics-predicted {
+		    fill: none;
+		    stroke: cadetblue;
+		    stroke-width: 3px;
+	    }
+
+		.axis path,
+		.axis line {
+		  fill: none;
+		  stroke: slategray;
+		  shape-rendering: crispEdges;
+		}

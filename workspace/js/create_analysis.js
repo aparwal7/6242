@@ -1,158 +1,77 @@
 $(document).ready(function () {
   console.log("drawing analysis")
-  // 2. Use the margin convention practice
-  const width = 400;
-  const height = 500;
-  const margin = 40;
-  const padding = 40;
-  const adj = 25;
+ var parseDate = d3.timeParse("%m/%d/%Y");
 
-// we are appending SVG first
-  const svg = d3.select("div#construction-permits-analysis").append("svg")
-    .attr("preserveAspectRatio", "xMinYMin meet")
-    .attr("viewBox", "-"
-      + 0 + " -"
-      +0 + " "
-      + (width ) + " "
-      + (height))
-    .style("padding", padding)
-    .style("margin", margin)
-    .attr("width", width)
-    .attr("height", height)
-    .classed("svg-content", true);
+var margin = {left: 50, right: 20, top: 20, bottom: 50 };
 
-//-----------------------------DATA------------------------------//
-  const timeConv = d3.timeParse("%Y-%m-%d");
-  d3.csv("analysis_data.csv", function (data) {
-    console.log("reading data: ", data)
-    const slices = data.columns.slice(1).map(function (id) {
-      return {
-        id: id,
-        values: data.map(function (d) {
-          return {
-            date: timeConv(d.date),
-            measurement: +d[id]
-          };
-        })
-      };
-    });
-    console.log("slices:",slices)
+var width = 400 - margin.left - margin.right;
+var height = 500 - margin.top - margin.bottom;
 
-//----------------------------SCALES-----------------------------//
-    const xScale = d3.scaleTime().range([0, width]);
-    const yScale = d3.scaleLinear().rangeRound([height, 0]);
 
-    xScale.domain(d3.extent(data, function (d) {
-      return timeConv(d.date)
-    }));
-    yScale.domain([(0), d3.max(slices, function (c) {
-      return d3.max(c.values, function (d) {
-        return d.measurement + 4;
-      });
-    })
-    ]);
-//-----------------------------AXES------------------------------//
-    const yaxis = d3.axisLeft()
-      .ticks(10)
-      .scale(yScale);
+var max = 0;
 
-    const xaxis = d3.axisBottom()
-      .ticks(10)
-      .tickFormat(d3.timeFormat('%b %y'))
-      .scale(xScale);
-//----------------------------LINES------------------------------//
+var xNudge = 50;
+var yNudge = 20;
 
-    const line = d3.line()
-      .x(function (d) {
-        return xScale(d.date);
-      })
-      .y(function (d) {
-        return yScale(d.measurement);
-      });
-
-    let id = 0;
-    const ids = function () {
-      return "line-" + id++;
-    }
-//-------------------------2. DRAWING----------------------------//
-
-//-----------------------------AXES------------------------------//
-    svg.append("g")
-      .attr("classed", "axis")
-      .style("font", "14px")
-      .attr("transform", "translate(" + margin + "," + height + ")")
-      .call(xaxis)
-      .append("text")
-      // .attr("transform", "rotate(-90)")
-      .attr("y", margin)
-      .attr("x", width / 2)
-      .style("text-anchor", "end")
-      .style("fill", "#000")
-      .style("font-size", "14px")
-      .text("Month");
-    ;
-
-    svg.append("g")
-      .attr("classed", "axis")
-      .attr("transform", "translate(" + margin + ",0)")
-      .call(yaxis)
-      .append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", -(margin + 20))
-      .attr("x", -(height / 2 - 20))
-      .style("text-anchor", "end")
-      .style("fill", "#000")
-      .style("font-size", "14px")
-      .text("Num of Ratings");
-//----------------------------LINES------------------------------//
-    var i = -1;
-    const lines = svg.selectAll("lines")
-      .data(slices)
-      .enter()
-      .append("g")
-      .attr("transform", "translate(" + margin + ",0)");
-
-    lines.append("path")
-      .style("stroke", function (d) {
-        i++;
-        return d3.schemeCategory10[i];
-
-      })
-      .style("fill", "none")
-      .attr("d", function (d) {
-        // console.log("values in path",d)
-        return line(d.values);
-      });
-
-    lines.append("text")
-      .attr("class", "serie_label")
-      .datum(function (d) {
-        return {
-          id: d.id,
-          value: d.values[d.values.length - 1]
-        };
-      })
-      .attr("transform", function (d) {
-        return "translate(" + (xScale(d.value.date) + 10)
-          + "," + (yScale(d.value.measurement) + 5) + ")";
-      })
-      .text(function (d) {
-        return d;
-      });
+var minDate = new Date();
+var maxDate = new Date();
 
 
 
-    // Chart title
-    svg.append("text")
-      .attr("x", (width / 2))
-      .attr("y",20)
-      // .attr("y",10)
-      .attr("text-anchor", "middle")
-      .attr("id", "title")
-      .attr("class", "serie_label")
-      .style("font-size", "20px")
 
-      .text("Number of Construction Permits");
+d3.csv("prices.csv")
+    .row(function(d) { return { month: parseDate(d.month), price: Number(d.price.trim().slice(1)),price2: Number(d.price2.trim().slice(1))}; })
+    .get(function(error, rows) {
+	    max = d3.max(rows, function(d) { return d.price; });
+	    minDate = d3.min(rows, function(d) {return d.month; });
+		maxDate = d3.max(rows, function(d) { return d.month; });
 
-  });
+
+		var y = d3.scaleLinear()
+					.domain([0,max])
+					.range([height,0]);
+
+		var x = d3.scaleTime()
+					.domain([minDate,maxDate])
+					.range([0,width]);
+
+		var yAxis = d3.axisLeft(y);
+
+		var xAxis = d3.axisBottom(x);
+
+		var line = d3.line()
+			.x(function(d){ return x(d.month); })
+			.y(function(d){ return y(d.price); })
+			.curve(d3.curveCardinal);
+
+			var line2 = d3.line()
+			.x(function(d){ return x(d.month); })
+			.y(function(d){ return y(d.price2); })
+			.curve(d3.curveCardinal);
+
+
+		var svg = d3.select("#construction-permits-analysis").append("svg").attr("id","svg").attr("height","100%").attr("width","100%");
+		var chartGroup = svg.append("g").attr("class","chartGroup").attr("transform","translate("+xNudge+","+yNudge+")");
+
+		chartGroup.append("path")
+			.attr("class","line-analytics")
+			.attr("d",function(d){ return line(rows); })
+
+      chartGroup.append("path")
+			.attr("class","line-analytics-predicted")
+			.attr("d",function(d){ return line2(rows); })
+
+
+		chartGroup.append("g")
+			.attr("class","axis x")
+			.attr("transform","translate(0,"+height+")")
+			.call(xAxis);
+
+		chartGroup.append("g")
+			.attr("class","axis y")
+			.call(yAxis);
+
+
+
+	});
 });

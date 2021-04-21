@@ -188,8 +188,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 
 $("#marker-chicago").change(function () {
+  console.log("markers checked"+this.checked)
   if (this.checked) {
     showConstructionMarkers = true;
+    showDensity = false;
     removeWardsLayerFromMap();
     addMarkersOnMap();
   } else {
@@ -199,7 +201,9 @@ $("#marker-chicago").change(function () {
 });
 
 $("#heatMap").change(function () {
+  console.log("heat map checked"+this.checked)
   if (this.checked) {
+    showConstructionMarkers=false;
     showDensity = true;
     removeMarkersFromMap()
     addWardsLayerToMap();
