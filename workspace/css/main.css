@@ -121,112 +121,174 @@ body {
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 }
-.big-checkbox {width: 30px; height: 30px;}
+
+.big-checkbox {
+  width: 30px;
+  height: 30px;
+}
 
 .legend {
-    line-height: 18px;
-    color: #555;
+  line-height: 18px;
+  color: #555;
 }
+
 .legend i {
-    width: 15px;
-    height: 15px;
-    float: left;
-    margin-right: 8px;
-    opacity: 0.7;
+  width: 15px;
+  height: 15px;
+  float: left;
+  margin-right: 8px;
+  opacity: 0.7;
 }
 
 .info {
-    padding: 6px 8px;
-    font: 14px/16px Arial, Helvetica, sans-serif;
-    background: white;
-    background: rgba(255,255,255,0.8);
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    border-radius: 5px;
+  padding: 6px 8px;
+  font: 14px/16px Arial, Helvetica, sans-serif;
+  background: white;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
 }
+
 .info h4 {
-    margin: 0 0 5px;
-    color: #777;
+  margin: 0 0 5px;
+  color: #777;
 }
+
 .marker {
-	fill: #31558d;
-	//stroke: #31558d;
-	fill-opacity: .75;
-	transition: all .2s ease-in-out;
+  fill: #31558d;
+/ / stroke: #31558d;
+  fill-opacity: .75;
+  transition: all .2s ease-in-out;
 }
 
 .marker-lat-long {
-	fill: red;
-	//stroke: #31558d;
-	fill-opacity: .75;
-	transition: all .2s ease-in-out;
+  fill: red;
+/ / stroke: #31558d;
+  fill-opacity: .75;
+  transition: all .2s ease-in-out;
 }
 
 .marker-lat-lang-p1 {
-	fill: limegreen;
-	//stroke: #31558d;
-	fill-opacity: .75;
-	transition: all .2s ease-in-out;
+  fill: limegreen;
+/ / stroke: #31558d;
+  fill-opacity: .75;
+  transition: all .2s ease-in-out;
 }
 
 .marker-lat-lang-p1 {
-	fill: purple;
-	//stroke: #31558d;
-	fill-opacity: .75;
-	transition: all .2s ease-in-out;
+  fill: purple;
+/ / stroke: #31558d;
+  fill-opacity: .75;
+  transition: all .2s ease-in-out;
 }
 
 
-
-.axis line{
-stroke: #706f6f;
-stroke-width: 0.5;
-shape-rendering: crispEdges;
+.axis line {
+  stroke: #706f6f;
+  stroke-width: 0.5;
+  shape-rendering: crispEdges;
 }
 
 /* axis contour */
 .axis path {
-stroke: #706f6f;
-stroke-width: 0.7;
-shape-rendering: crispEdges;
+  stroke: #706f6f;
+  stroke-width: 0.7;
+  shape-rendering: crispEdges;
 }
 
 /* axis text */
 .axis text {
-fill: #2b2929;
-font-family: Georgia;
-font-size: 120%;
+  fill: #2b2929;
+  font-family: Georgia;
+  font-size: 120%;
 }
 
 
-
-div.svg-container{
-    border: 2px solid #636363;
-    margin-bottom: 20px;
+div.svg-container {
+  border: 2px solid #636363;
+  margin-bottom: 20px;
 }
 
 
 path.line-analytics {
-		    fill: none;
-		    stroke: red;
-		    stroke-width: 3px;
-	    }
+  fill: none;
+  stroke: lightcoral;
+  stroke-width: 2px;
+}
 
-		.axis path,
-		.axis line {
-		  fill: none;
-		  stroke: slategray;
-		  shape-rendering: crispEdges;
-		}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: slategray;
+  shape-rendering: crispEdges;
+}
 
 path.line-analytics-predicted {
-		    fill: none;
-		    stroke: cadetblue;
-		    stroke-width: 3px;
-	    }
+  fill: none;
+  stroke: cadetblue;
+  stroke-width: 2px;
+}
 
-		.axis path,
-		.axis line {
-		  fill: none;
-		  stroke: slategray;
-		  shape-rendering: crispEdges;
-		}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: slategray;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  /*display: none;*/
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+.focus circle {
+  fill: steelblue;
+}
+
+.focus text {
+  font-size: 14px;
+}
+
+.tool-tip-cir {
+  fill: darkblue;
+  /*opacity: 0.75;*/
+}
+
+.tooltip {
+  fill: white;
+  stroke: #000;
+}
+
+.tooltip-box {
+  fill: white;
+  stroke: #000;
+}
+
+.tooltip-date, .tooltip-likes, .tooltip-fitted {
+  font-weight: lighter;
+  font-size: xx-small;
+}
+
+.legend { /* NEW */
+  font-size: 12px; /* NEW */
+}
+
+/* NEW */
+rect { /* NEW */
+  stroke-width: 2; /* NEW */
+}
+.serie_label {
+fill: dimgrey;
+font-family: Georgia;
+font-size: 80%;
+}
