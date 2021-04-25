@@ -59,4 +59,4 @@ EXECUTION
    
 	1) Pull the project files from github: git clone https://github.com/aparwal7/6242.git
 	2) Locate ./ARIMA/tsa.ipynb
-	3) Before running, make sure you import key python packages - Pandas, Numpy, statsmodels.tsa.arima_model and pmdarima
+	3) Before running, make sure you install key python packages - Pandas, Numpy, statsmodels.tsa.arima_model and pmdarima
