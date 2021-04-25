@@ -47,3 +47,15 @@ EXECUTION
 
 	From the command line, run: "python VAR.py"
 	Alternatively, run the VAR.py file from your IDE. Demo code is already included in the main function.
+
+
+3. ARIMA Analysis
+
+   DESCRIPTION:
+   
+   We have a python notebook, tsa.ipynb, that walks us through loading data into a pandas dataframe, performing some exploratory analysis, followed by our complete    ARIMA        analysis i.e. model training, fit and forecast and RMSE calculation.
+   
+   INSTALLATION : 
+   
+	1) Pull the project files from github: git clone https://github.com/aparwal7/6242.git
+	2) Locate ./ARIMA/tsa.ipynb
