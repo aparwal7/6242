@@ -19,11 +19,12 @@
  https://dva-wasp.s3.amazonaws.com/workspace/index2.html
   
  The code can also be run on a local machine by downloading the latest code from github and run the local http server:
- <<github link>>
+ https://github.com/aparwal7/6242.git
  
- Steps: 1) git clones -s <<github link>>
+ Steps: 1) git clones -s https://github.com/aparwal7/6242.git
  2)goto folder workspace : cd /workspace
- 3)run http server: python3 -m http.server0
+ 3)run http server: python3 -m http.server
+ 4)goto browser and open : http://localhost:8000/index2.html
  
  
  2. VAR Analysis:
