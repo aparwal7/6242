@@ -1,0 +1,7 @@
+Building permits are great information to understand construction trends. A spatio-temporal analysis done in the article[1] provides us, with lots of parallels in our aim to visualize the construction trends over time. Analysis of type of work,value and links with other happenings like covid, would enrich understanding beyond time and space[1]. 
+Lot of work has been done on usage choropleth maps to visualize geo spatial models, like dynamic increase in percievable area[2], boundary neighbour selection [2]. This coupled with Google Maps/API, gives us ability to develop interactive webpages. Reactive time component to geo-spatial models, presents its own challenges. Possible solutions are discussed in EST[3]. We can combine the principles mentioned in EST[3] with web development technologies[4] to provide an easily accessible tool that visualizes trends in construction patterns.
+
+[1]Using Building Permits to Monitor Disaster Recovery: A Spatio-Temporal Case Study of Coastal Mississippi Following Hurricane Katrina
+[2]Dynamic Choropleth Maps – Using Amalgamation to Increase Area Perceivability
+[3]Exploratory spatio-temporal visualization: an analytical review
+[4]d3js with angular application
