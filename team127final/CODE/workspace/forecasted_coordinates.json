@@ -1,0 +1,16 @@
+{
+  "data": [
+    {
+      "index": 0,
+      "avg_latitude": 41.8688904885,
+      "avg_longitude": -87.670050483,
+      "year": 2022
+    },
+    {
+      "index": 1,
+      "avg_latitude": 41.8695888881,
+      "avg_longitude": -87.6708447174,
+      "year": 2023
+    }
+  ]
+}
